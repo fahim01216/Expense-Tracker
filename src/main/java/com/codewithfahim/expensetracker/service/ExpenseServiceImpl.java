@@ -1,12 +1,14 @@
 package com.codewithfahim.expensetracker.service;
 
 import com.codewithfahim.expensetracker.entity.Expense;
+import com.codewithfahim.expensetracker.exception.ResourceNotFoundException;
 import com.codewithfahim.expensetracker.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,12 +28,33 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    public List<Expense> getExpensesByCategory(String category, Pageable page) {
+        return expenseRepository.findByCategory(category, page).toList();
+    }
+
+    @Override
+    public List<Expense> getExpensesByName(String keyword, Pageable page) {
+        return expenseRepository.findByNameContaining(keyword, page).toList();
+    }
+
+    @Override
+    public List<Expense> getExpensesByDate(Date startDate, Date endDate, Pageable page) {
+        if(startDate == null) {
+            startDate = new Date(0);
+        }
+        if(endDate == null) {
+            endDate = new Date(System.currentTimeMillis());
+        }
+        return expenseRepository.findByCreatedAtBetween(startDate, endDate, page).toList();
+    }
+
+    @Override
     public Expense getExpenseById(Long id) {
         Optional<Expense> expense =  expenseRepository.findById(id);
         if(expense.isPresent()) {
             return expense.get();
         }
-        throw new RuntimeException("Expense not found for the id: " + id);
+        throw new ResourceNotFoundException("Expense not found for the id: " + id);
     }
 
     @Override
@@ -47,10 +70,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public void deleteExpenseById(Long id) {
-        Optional<Expense> expense = expenseRepository.findById(id);
-        if(expense.isPresent()) {
-            expenseRepository.deleteById(id);
-        }
-        //throw new RuntimeException("Expense not found for the id: " + id);
+        Expense expense = getExpenseById(id);
+        throw new ResourceNotFoundException("Expense not found for the id: " + id);
     }
 }
