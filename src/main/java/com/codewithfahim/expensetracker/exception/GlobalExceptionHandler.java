@@ -61,7 +61,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     // customize validation error response
-    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode httpStatusCode, WebRequest request) {
         List<String> errors = ex.getBindingResult()
                         .getFieldErrors()
