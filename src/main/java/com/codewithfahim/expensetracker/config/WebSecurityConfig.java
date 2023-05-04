@@ -57,24 +57,4 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public InMemoryUserDetailsManager config() {
-//        InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
-//        UserDetails user1 = User.withUsername("fahim").password("fahim012").authorities("admin").build();
-//        UserDetails user2 = User.withUsername("Sunny").password("sunny012").authorities("user").build();
-//        inMemoryUserDetailsManager.createUser(user1);
-//        inMemoryUserDetailsManager.createUser(user2);
-//        //auth.userDetailsService(customUserDetailsService);
-//        return new InMemoryUserDetailsManager((UserDetails) customUserDetailsService);
-//    }
-//    @Bean
-//    public AuthenticationManager authenticationManagerBean() {
-//        return new AuthenticationManager() {
-//            @Override
-//            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-//                return null;
-//            }
-//        };
-//    }
-
 }
